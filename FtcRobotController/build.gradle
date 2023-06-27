@@ -23,4 +23,8 @@ android {
     namespace = 'com.qualcomm.ftcrobotcontroller'
 }
 
+dependencies {
+    implementation files("C:\\Users\\Public\\wpilib\\2023\\maven\\edu\\wpi\\first\\wpilibj\\wpilibj-java\\2023.4.3\\wpilibj-java-2023.4.3.jar")
+}
+
 apply from: '../build.dependencies.gradle'
