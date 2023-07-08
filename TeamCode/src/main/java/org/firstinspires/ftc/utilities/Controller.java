@@ -2,9 +2,15 @@ package org.firstinspires.ftc.utilities;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-public class Controller {
+/**
+ * A Java Class meant to represents a ps4 controller.
+ * <p><i>Essentially gabkion's Controller class only changed to better serve PS users' needs.
+ *
+ * @author Xpiravit
+ */
 
-
+public class Controller
+{
     private final Gamepad gamepad;
     private boolean squareCurrentState;
     private boolean triangleCurrentState;
@@ -30,19 +36,6 @@ public class Controller {
     private boolean toggleRS = false;
     private boolean toggleLB = false;
     private boolean toggleRB = false;
-    private boolean pressSq = false;
-    private boolean pressTr = false;
-    private boolean pressCr = false;
-    private boolean pressCi = false;
-    private boolean pressUp = false;
-    private boolean pressDown = false;
-    private boolean pressLeft = false;
-    private boolean pressRight = false;
-    private boolean pressLS = false;
-    private boolean pressRS = false;
-    private boolean pressLB = false;
-    private boolean pressRB = false;
-
 
     public Controller(Gamepad gamepad) {
         this.gamepad = gamepad;
@@ -211,9 +204,7 @@ public class Controller {
         return (dpadDownCurrentState && !dpadDownPastState);
     }
 
-    public boolean dpadDownPress() {
-        return pressDown;
-    }
+    public boolean dpadDownPress() { return dpadDownCurrentState; }
 
     public boolean isDpadDownToggled()
     {
