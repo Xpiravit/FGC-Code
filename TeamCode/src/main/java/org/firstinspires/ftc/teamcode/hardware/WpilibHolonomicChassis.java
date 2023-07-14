@@ -23,8 +23,8 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 /**
  * A Java Class meant to represents a robot's chassis for a square 45 degree omniwheel drivetrain.
- * This class is utilizing tools found in wpilib's packages. Thus, pleases familiarize yourself with wpilib before making changes to code below
- * Thus any errors in the localization, PID calculations or the management of the robots trajectory derive from use of mistuned algorithm parameters, all parameters should be empirically tested and changed accordingly.
+ * This class is utilizing tools found in wpilib's packages. Thus, pleases familiarize yourself with wpilib before making changes to code below.
+ * <p>Any errors in the localization, PID calculations or the management of the robots trajectory derive from use of mistuned algorithm parameters, all parameters should be empirically tested and changed accordingly.
  *
  * @author Xpiravit
  */
@@ -130,7 +130,7 @@ public class WpilibHolonomicChassis
 
         Rotation2d desiredHeading = new Rotation2d((rotate - gyro.getCurrentHeading()) * MAX_ANGULAR_VELOCITY); // Maybe the constant and/or the subtraction can be skipped
 
-        Pose2d desiredPose = new Pose2d(drive, strafe, desiredHeading);
+        Pose2d desiredPose = new Pose2d(drive, strafe, desiredHeading); // Add it current Pose
         Pose2d currentPose = poseEstimator.getEstimatedPosition();
 
         ChassisSpeeds chassisSpeeds = driveController.calculate(currentPose, desiredPose, desiredLinearVelocity, desiredHeading);
