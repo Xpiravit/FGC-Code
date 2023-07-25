@@ -2,13 +2,6 @@ package org.firstinspires.ftc.utilities;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-/**
- * A Java Class meant to represents a ps4 controller.
- * <p><i>Essentially gabkion's Controller class only changed to better serve PS users' needs.
- *
- * @author Xpiravit
- */
-
 public class Controller
 {
     private final Gamepad gamepad;

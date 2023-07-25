@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.singapore;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -10,9 +11,10 @@ import org.firstinspires.ftc.teamcode.singapore.hardware.SixWheelDrive;
 public class Robot extends SixWheelDrive
 {
     public Bucket bucket;
-
-    private DcMotor intakeMotor;
+    private final DcMotor intakeMotor;
     private boolean intakeState = false;
+    DigitalChannel liftTopEnd;
+    DigitalChannel liftBottomEnd;
 
     public Robot (HardwareMap hardwareMap, Telemetry telemetry)
     {
@@ -20,6 +22,12 @@ public class Robot extends SixWheelDrive
 
         bucket = new Bucket(hardwareMap, telemetry);
         intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor");
+
+        liftTopEnd = hardwareMap.get(DigitalChannel.class, "lift_top");
+        liftTopEnd.setMode(DigitalChannel.Mode.INPUT);
+
+        liftBottomEnd = hardwareMap.get(DigitalChannel.class, "lift_bottom");
+        liftBottomEnd.setMode(DigitalChannel.Mode.INPUT);
     }
 
     private void startIntake(){

@@ -45,12 +45,19 @@ public class Bucket
         liftMotor.setPower(0);
     }
 
-    public void empty(){
+    private void empty(){
         servo.setPosition(1);
+        servoPosition = false;
     }
 
-    public void reset(){
+    private void reset(){
         servo.setPosition(0);
+        servoPosition = true;
+    }
+
+    public void toggle(){
+        if (servoPosition) empty();
+        else reset();
     }
 
     public void resetLift(){

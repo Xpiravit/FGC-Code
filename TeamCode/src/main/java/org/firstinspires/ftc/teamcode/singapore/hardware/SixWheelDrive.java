@@ -11,6 +11,7 @@ import org.firstinspires.ftc.teamcode.singapore.utils.SCurveControllerAccelerati
 
 public class SixWheelDrive
 {
+
     private final DcMotor Left;
     private final DcMotor Right;
     public final IMUWraper gyro;
@@ -22,11 +23,12 @@ public class SixWheelDrive
     private double robotX = 0.0;
     private double robotY = 0.0;
     private double robotHeading = 0.0;
-
+    private int previousLeftEncoder;
+    private int previousRightEncoder;
     private static final double TICKS_PER_REVOLUTION = 336;
-    private static double MAX_POWER = 1.0;
-    private static double ACCELERATION_RATE = 0.1;
-
+    private static final double WHEEL_DIAMETER_INCHES = 4.0;
+    private static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER_INCHES * Math.PI;
+//    private static final double ROBOT_WIDTH_INCHES = 12;
 
     public SixWheelDrive(@NonNull HardwareMap hardwareMap, Telemetry telemetry) {
         this(hardwareMap, telemetry, 1.0, 0.1);
@@ -42,10 +44,7 @@ public class SixWheelDrive
 
         this.telemetry = telemetry;
 
-        MAX_POWER = maxPower;
-        ACCELERATION_RATE = accelerationRate;
-
-        this.motionProfile = new SCurveControllerAcceleration(MAX_POWER, ACCELERATION_RATE);
+        this.motionProfile = new SCurveControllerAcceleration(maxPower, accelerationRate);
 
         initializeMotors();
         stopAndResetEncoders();
@@ -86,7 +85,6 @@ public class SixWheelDrive
     public void setPower(boolean debugMode, double drive, double turn) {
         setPower(debugMode, drive, turn,false);
     }
-
     public void setPower(boolean debugMode, double drive, double turn, boolean motioncontrolEnabled)
     {
         double leftPower;
@@ -120,19 +118,29 @@ public class SixWheelDrive
 
     private void updatePositionAndHeading()
     {
-        double currentHeading = gyro.getCurrentHeading();
+        int currentLeftEncoder = Left.getCurrentPosition();
+        int currentRightEncoder = Right.getCurrentPosition();
 
-        double frontLeftDistance = Left.getCurrentPosition() / TICKS_PER_REVOLUTION;
-        double frontRightDistance = Right.getCurrentPosition() / TICKS_PER_REVOLUTION;
+        int deltaLeftEncoder = currentLeftEncoder - previousLeftEncoder;
+        int deltaRightEncoder = currentRightEncoder - previousRightEncoder;
 
-        double averageDistance = (frontLeftDistance + frontRightDistance) / 2.0;
+        previousLeftEncoder = currentLeftEncoder;
+        previousRightEncoder = currentRightEncoder;
 
-        double deltaX = averageDistance * Math.sin(Math.toRadians(currentHeading));
-        double deltaY = averageDistance * Math.cos(Math.toRadians(currentHeading));
+        double leftDistance = deltaLeftEncoder / TICKS_PER_REVOLUTION * WHEEL_CIRCUMFERENCE;
+        double rightDistance = deltaRightEncoder / TICKS_PER_REVOLUTION * WHEEL_CIRCUMFERENCE;
+
+//        double deltaHeading = (leftDistance - rightDistance) / ROBOT_WIDTH_INCHES;
+//        The IMU is used to calculate the current heading.
+
+        double deltaDistance = (leftDistance + rightDistance) / 2.0;
+
+        double deltaX = deltaDistance * Math.cos(Math.toRadians(robotHeading));
+        double deltaY = deltaDistance * Math.sin(Math.toRadians(robotHeading));
 
         robotX += deltaX;
         robotY += deltaY;
-        robotHeading = currentHeading;
+        robotHeading = gyro.getCurrentHeading();
     }
 
     public double getRobotX() {

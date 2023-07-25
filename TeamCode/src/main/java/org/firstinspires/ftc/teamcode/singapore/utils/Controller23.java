@@ -1,9 +1,7 @@
 package org.firstinspires.ftc.teamcode.singapore.utils;
 
 import androidx.annotation.NonNull;
-
 import com.qualcomm.robotcore.hardware.Gamepad;
-
 import edu.spa.ftclib.internal.state.ToggleBoolean;
 
 public class Controller23 extends Gamepad
@@ -77,7 +75,8 @@ public class Controller23 extends Gamepad
         left_stick.rawX = controller.left_stick_x;
     }
 
-    public static class Thumbstick {
+    public static class Thumbstick
+    {
         public double rawX;
         public double rawY;
 
@@ -93,7 +92,6 @@ public class Controller23 extends Gamepad
         public double getX() {
             return rawX;
         }
-
         public double getY() {
             return rawY;
         }
@@ -103,17 +101,5 @@ public class Controller23 extends Gamepad
             this.shiftedX = (this.rawX * Math.cos(Math.toRadians(shiftAngle))) - (this.rawY * Math.sin(Math.toRadians(shiftAngle)));
             this.shiftedY = (this.rawX * Math.sin(Math.toRadians(shiftAngle))) + (this.rawY * Math.cos(Math.toRadians(shiftAngle)));
         }
-
-        public double getShiftedX(Double shiftAngle) {
-            return (this.rawX * Math.sin(Math.toRadians(shiftAngle))) + (this.rawY * Math.cos(Math.toRadians(shiftAngle)));
-        }
-
-        public double getShiftedY(Double shiftAngle) {
-            return (this.rawX * Math.sin(Math.toRadians(shiftAngle))) + (this.rawY * Math.cos(Math.toRadians(shiftAngle)));
-        }
     }
-
-
-
-
 }
