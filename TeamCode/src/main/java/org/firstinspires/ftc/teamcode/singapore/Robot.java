@@ -49,10 +49,9 @@ public class Robot extends SixWheelDrive
     public void updateTelemetry()
     {
         telemetry.addData("Heading", "Heading = %.2f Degrees", super.getHeading());
-        telemetry.addData("Position", "X (meters) %.2f Y (meters) %.2f", super.getRobotX(), super.getRobotY());
+        telemetry.addData("Position", "X %.2f Y %.2f", super.getRobotX(), super.getRobotY());
         bucket.updateTelemetry();
         if (intakeState) telemetry.addData("Intake State: ", "Running");
         else telemetry.addData("Intake State: ", "Stopped");
     }
-
 }

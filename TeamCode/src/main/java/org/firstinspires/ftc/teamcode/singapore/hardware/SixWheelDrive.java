@@ -2,22 +2,27 @@ package org.firstinspires.ftc.teamcode.singapore.hardware;
 
 import androidx.annotation.NonNull;
 
+import com.arcrobotics.ftclib.controller.PIDFController;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.utilities.IMUWraper;
 import org.firstinspires.ftc.teamcode.singapore.utils.SCurveControllerAcceleration;
+import org.firstinspires.ftc.utilities.IMUWraper;
 
 public class SixWheelDrive
 {
 
-    private final DcMotor Left;
-    private final DcMotor Right;
+    private final DcMotorEx Left;
+    private final DcMotorEx Right;
     public final IMUWraper gyro;
 
     protected final Telemetry telemetry;
+    private final PIDFController turnController;
 
+//    private KalmanFilter filter;
+//    Might need to be implemented if IMU measurements are inadequate
     private final SCurveControllerAcceleration motionProfile;
 
     private double robotX = 0.0;
@@ -25,6 +30,10 @@ public class SixWheelDrive
     private double robotHeading = 0.0;
     private int previousLeftEncoder;
     private int previousRightEncoder;
+    private boolean wasTurning = false;
+    private int pastDirection = 0;
+    private final double gyroErrorThreshold = 0.1;
+//    private TrapezoidProfile
     private static final double TICKS_PER_REVOLUTION = 336;
     private static final double WHEEL_DIAMETER_INCHES = 4.0;
     private static final double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER_INCHES * Math.PI;
@@ -35,8 +44,8 @@ public class SixWheelDrive
     }
     public SixWheelDrive(@NonNull HardwareMap hardwareMap, Telemetry telemetry, double maxPower, double accelerationRate)
     {
-        this.Left = hardwareMap.get(DcMotor.class, "left_motor");
-        this.Right = hardwareMap.get(DcMotor.class, "right_motor");
+        this.Left = hardwareMap.get(DcMotorEx.class, "left_motor");
+        this.Right = hardwareMap.get(DcMotorEx.class, "right_motor");
 
         this.gyro = new IMUWraper(hardwareMap, "imu");
 
@@ -45,6 +54,8 @@ public class SixWheelDrive
         this.telemetry = telemetry;
 
         this.motionProfile = new SCurveControllerAcceleration(maxPower, accelerationRate);
+
+        this.turnController = new PIDFController(0.015, 0.000, 0.004, 0.1);
 
         initializeMotors();
         stopAndResetEncoders();
@@ -115,6 +126,36 @@ public class SixWheelDrive
 
         updatePositionAndHeading();
     }
+    private void turnToDegrees(double targetHeading)
+    {
+        double angleToTurn = targetHeading - getHeading();
+
+        if (angleToTurn > 180.0) angleToTurn -= 360.0;
+        else if (angleToTurn < -180.0) angleToTurn += 360.0;
+
+        setPower(0.0, turnController.calculate(angleToTurn) * 0.7);
+        brake();
+
+//        If a while loop was utilized the driver would have no control over the robot while it was turning, this way though
+//        we can still control the robot and this is called each loop iteration so it turns and we can do other things simultaneously.
+//
+//        // Keep turning until the robot faces the desired heading
+//        while (Math.abs(angleToTurn) > gyroErrorThreshold)
+//        {
+//            setPower(0.0, angleToTurn * turnPower);
+//
+//            angleToTurn = targetHeading - getHeading();
+//
+//            // Adjust the angle to ensure the shortest turn direction
+//            if (angleToTurn > 180.0) {
+//                angleToTurn -= 360.0;
+//            } else if (angleToTurn < -180.0) {
+//                angleToTurn += 360.0;
+//            }
+//        }
+//
+//        brake();
+    }
 
     private void updatePositionAndHeading()
     {
@@ -143,6 +184,55 @@ public class SixWheelDrive
         robotHeading = gyro.getCurrentHeading();
     }
 
+    public void turnToHorizon(@NonNull boolean[] values)
+    {
+        if (values[0])
+        {
+            turnToDegrees(0);
+            pastDirection = 0;
+            wasTurning = true;
+        }
+        else if (values[1])
+        {
+            turnToDegrees(90);
+            pastDirection = 1;
+            wasTurning = true;
+        }
+        else if (values[2])
+        {
+            turnToDegrees(180);
+            pastDirection = 2;
+            wasTurning = true;
+        }
+        else if (values[3])
+        {
+            turnToDegrees(270);
+            pastDirection = 3;
+            wasTurning = true;
+        }
+        else if (wasTurning && Math.abs(pastDirection - getHeading()) > gyroErrorThreshold)
+        {
+            switch (pastDirection)
+            {
+                case 0:
+                    turnToDegrees(0);
+                    break;
+
+                case 1:
+                    turnToDegrees(90);
+                    break;
+
+                case 2:
+                    turnToDegrees(180);
+                    break;
+
+                case 3:
+                    turnToDegrees(270);
+                    break;
+            }
+        }
+        else if (wasTurning) wasTurning = false;
+    }
     public double getRobotX() {
         return robotX;
     }
@@ -151,8 +241,12 @@ public class SixWheelDrive
         return robotY;
     }
 
+    public void brake() {
+        setPower(0 ,0);
+    }
+
     public double getHeading() {
-        return robotHeading;
+        return robotHeading = gyro.getCurrentHeading();
     }
 
     public void resetGyro() {

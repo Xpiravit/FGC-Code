@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode.singapore;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.singapore.utils.Controller23;
 
-@Disabled
+//@Disabled
 @TeleOp(name = "FGC Teleop", group = "Final")
 public class FGCTeleop extends OpMode
 {
@@ -17,7 +18,9 @@ public class FGCTeleop extends OpMode
     @Override
     public void init()
     {
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
         telemetry.addData("Status", "Initialized");
+        telemetry.setMsTransmissionInterval(50);
 
         driver = new Controller23(gamepad1);
         robot = new Robot(hardwareMap, telemetry);
@@ -29,14 +32,14 @@ public class FGCTeleop extends OpMode
         if(driver.R3()) robot.resetGyro();
 
         //Controller configuration
-        driver.updateStickValues();
+        driver.update();
         driver.left_stick.setShift(robot.getHeading() - perspectiveError);
         driver.right_stick.setShift(0);
 
         //Driver controls
         robot.setPower(true, driver.left_stick.shiftedY, driver.left_stick.shiftedX, true);
 
-//      robot.setCardinalAngle(driver.dpadUpStateUpdate(), driver.dpadRightStateUpdate(), driver.dpadDownStateUpdate(), driver.dpadLeftStateUpdate());
+        robot.turnToHorizon(driver.dpad);
 
         if (driver.toggleState(driver.B())) robot.toggleIntake();
 
@@ -53,6 +56,7 @@ public class FGCTeleop extends OpMode
             robot.bucket.stopLift();
             robot.bucket.liftPosition = 0;
         }
+        while (driver.X()) robot.brake();
 
         //Telemetry
         robot.updateTelemetry();

@@ -1,12 +1,15 @@
 package org.firstinspires.ftc.teamcode.singapore.utils;
 
 import androidx.annotation.NonNull;
-import com.qualcomm.robotcore.hardware.Gamepad;
-import edu.spa.ftclib.internal.state.ToggleBoolean;
 
-public class Controller23 extends Gamepad
+import com.qualcomm.robotcore.hardware.Gamepad;
+
+public class Controller23
 {
     private final Gamepad controller;
+    private boolean currentState = false;
+    private boolean previouslyPressed = false;
+    public boolean[] dpad = new boolean[4];
     public Thumbstick left_stick;
     public Thumbstick right_stick;
 
@@ -17,12 +20,11 @@ public class Controller23 extends Gamepad
         right_stick = new Thumbstick(controller.right_stick_x, controller.right_stick_y);
     }
 
-    public boolean toggleState(boolean currentState)
+    public boolean toggleState(boolean currentlyPressed)
     {
-        ToggleBoolean button = new ToggleBoolean();
-
-        button.input(currentState);
-        return button.output();
+        if (currentlyPressed && !previouslyPressed) this.currentState = !this.currentState;
+        previouslyPressed = currentlyPressed;
+        return this.currentState;
     }
 
     public boolean X(){
@@ -68,11 +70,14 @@ public class Controller23 extends Gamepad
         return controller.dpad_right;
     }
 
-
-
-    public void updateStickValues(){
+    public void update(){
         right_stick.rawX = controller.right_stick_x;
         left_stick.rawX = controller.left_stick_x;
+
+        dpad[0] = dpadUp();
+        dpad[1] = dpadRight();
+        dpad[2] = dpadDown();
+        dpad[3] = dpadLeft();
     }
 
     public static class Thumbstick
