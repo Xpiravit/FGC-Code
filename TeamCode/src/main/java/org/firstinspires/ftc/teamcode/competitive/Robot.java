@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode.singapore;
+package org.firstinspires.ftc.teamcode.competitive;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.singapore.hardware.Bucket;
-import org.firstinspires.ftc.teamcode.singapore.hardware.SixWheelDrive;
+import org.firstinspires.ftc.teamcode.competitive.hardware.Bucket;
+import org.firstinspires.ftc.teamcode.competitive.hardware.SixWheelDrive;
 
 public class Robot extends SixWheelDrive
 {

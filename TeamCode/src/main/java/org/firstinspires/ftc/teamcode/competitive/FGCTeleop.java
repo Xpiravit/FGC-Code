@@ -1,17 +1,17 @@
-package org.firstinspires.ftc.teamcode.singapore;
+package org.firstinspires.ftc.teamcode.competitive;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.singapore.utils.Controller23;
+import org.firstinspires.ftc.teamcode.competitive.utils.Controller;
 
 //@Disabled
 @TeleOp(name = "FGC Teleop", group = "Final")
 public class FGCTeleop extends OpMode
 {
-    private Controller23 driver;
+    private Controller driver;
     private Robot robot;
     private static final double perspectiveError = 0;
 
@@ -22,7 +22,7 @@ public class FGCTeleop extends OpMode
         telemetry.addData("Status", "Initialized");
         telemetry.setMsTransmissionInterval(50);
 
-        driver = new Controller23(gamepad1);
+        driver = new Controller(gamepad1);
         robot = new Robot(hardwareMap, telemetry);
     }
 

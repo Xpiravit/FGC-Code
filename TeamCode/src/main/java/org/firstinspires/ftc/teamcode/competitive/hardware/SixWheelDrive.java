@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.singapore.hardware;
+package org.firstinspires.ftc.teamcode.competitive.hardware;
 
 import androidx.annotation.NonNull;
 
@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.singapore.utils.SCurveControllerAcceleration;
+import org.firstinspires.ftc.teamcode.competitive.utils.SCurveControllerAcceleration;
 import org.firstinspires.ftc.utilities.IMUWraper;
 
 public class SixWheelDrive

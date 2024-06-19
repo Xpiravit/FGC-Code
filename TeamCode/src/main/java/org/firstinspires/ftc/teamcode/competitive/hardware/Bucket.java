@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.singapore.hardware;
+package org.firstinspires.ftc.teamcode.competitive.hardware;
 
 import androidx.annotation.NonNull;
 

@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.singapore.utils;
+package org.firstinspires.ftc.teamcode.competitive.utils;
 
 import androidx.annotation.NonNull;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
-public class Controller23
+public class Controller
 {
     private final Gamepad controller;
     private boolean currentState = false;
@@ -13,7 +13,7 @@ public class Controller23
     public Thumbstick left_stick;
     public Thumbstick right_stick;
 
-    public Controller23(@NonNull Gamepad controller)
+    public Controller(@NonNull Gamepad controller)
     {
         this.controller = controller;
         left_stick = new Thumbstick(controller.left_stick_x, controller.left_stick_y);
