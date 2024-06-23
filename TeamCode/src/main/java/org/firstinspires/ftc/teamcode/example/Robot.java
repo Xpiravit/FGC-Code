@@ -1,17 +1,18 @@
 package org.firstinspires.ftc.teamcode.example;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 import org.firstinspires.ftc.teamcode.example.hardware.Bucket;
 import org.firstinspires.ftc.teamcode.example.hardware.SixWheelDrive;
 
 public class Robot extends SixWheelDrive
 {
     public Bucket bucket;
-    private final DcMotor intakeMotor;
+    private final DcMotorEx intakeMotor;
     private boolean intakeState = false;
     DigitalChannel liftTopEnd;
     DigitalChannel liftBottomEnd;
@@ -21,7 +22,7 @@ public class Robot extends SixWheelDrive
         super(hardwareMap, telemetry);
 
         bucket = new Bucket(hardwareMap, telemetry);
-        intakeMotor = hardwareMap.get(DcMotor.class, "intake_motor");
+        intakeMotor = hardwareMap.get(DcMotorEx.class, "intake_motor");
 
         liftTopEnd = hardwareMap.get(DigitalChannel.class, "lift_top");
         liftTopEnd.setMode(DigitalChannel.Mode.INPUT);

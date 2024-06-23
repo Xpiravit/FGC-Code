@@ -22,7 +22,8 @@ public class SixWheelDrive
     private final PIDFController turnController;
 
 //    private KalmanFilter filter;
-//    Might need to be implemented if IMU measurements are inadequate
+//    Might need to be implemented if IMU measurements are inaccurate
+
     private final SCurveControllerAcceleration motionProfile;
 
     private double robotX = 0.0;
@@ -172,7 +173,7 @@ public class SixWheelDrive
         double rightDistance = deltaRightEncoder / TICKS_PER_REVOLUTION * WHEEL_CIRCUMFERENCE;
 
 //        double deltaHeading = (leftDistance - rightDistance) / ROBOT_WIDTH_INCHES;
-//        The IMU is used to calculate the current heading.
+//        The IMU is used to calculate the current heading instead.
 
         double deltaDistance = (leftDistance + rightDistance) / 2.0;
 

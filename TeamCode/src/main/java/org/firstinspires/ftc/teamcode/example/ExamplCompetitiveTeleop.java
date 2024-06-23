@@ -8,8 +8,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.teamcode.example.utils.Controller;
 
 //@Disabled
-@TeleOp(name = "FGC Teleop", group = "Final")
-public class FGCTeleop extends OpMode
+@TeleOp(name = "Example Teleop", group = "Final")
+public class ExamplCompetitiveTeleop extends OpMode
 {
     private Controller driver;
     private Robot robot;
@@ -56,7 +56,7 @@ public class FGCTeleop extends OpMode
             robot.bucket.stopLift();
             robot.bucket.liftPosition = 0;
         }
-        while (driver.X()) robot.brake();
+        if (driver.X()) robot.brake();
 
         //Telemetry
         robot.updateTelemetry();
