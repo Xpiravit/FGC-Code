@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode.competitive;
+package org.firstinspires.ftc.teamcode.example;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.competitive.utils.Controller;
+import org.firstinspires.ftc.teamcode.example.utils.Controller;
 
 //@Disabled
 @TeleOp(name = "FGC Teleop", group = "Final")
